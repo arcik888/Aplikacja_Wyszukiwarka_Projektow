@@ -1,0 +1,3 @@
+import silnik
+
+s = silnik
