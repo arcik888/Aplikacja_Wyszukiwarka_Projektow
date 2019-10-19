@@ -21,20 +21,27 @@ for i in main:                  # Pętla przeszukująca katalog główny - przes
                         print(j)                # Wyświetlanie numeru projektu ze znalezioną frazą
                         """
 
-class Silnik():
-    def __init__(self, gen, top):
-        #self.fraza = fraza
-        #self.gen = gen
-        #self.main = main
-        self.gen = 'C:\\Users\\arcik\\Desktop\\DESIGNS\\'
-        self.top = os.listdir(self.gen)
-
-    def wyszukiwanie(self):
-        for i in self.top:
-            print(i)
-
+class Engine():
+    def __init__(self, top):
+        self.top = top
+        
+    def folder_search(self):
+        intro = os.listdir(self.top)
+        for i in intro:
+            if i[0:2] == 'KI':
+                print(i)
+                des = os.listdir(self.top + i)
+                for j in des:
+                    print(j)
 
 fraza = input("Podaj szukaną frazę: ")
-szukanie = Silnik.wyszukiwanie(fraza)
+
+kat_glowny = 'C:\\Users\\arcik\\Desktop\\DESIGNS\\'
+#katalogi = os.listdir(kat_glowny)
+
+szukanie = Engine(kat_glowny)
+szukanie.folder_search()
+ 
+
 
 
