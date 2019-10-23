@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Aplikacja_Wyszukiwarka_Projektow.py" />
+    <Compile Include="gui.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="silnik.py">
       <SubType>Code</SubType>
     </Compile>
