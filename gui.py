@@ -9,12 +9,16 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.setWindowTitle("Wyszukiwarka Projektów")
     
-        label = QLabel("Wyszukaj Projekt")
-        label.setAlignment(Qt.AlignCenter)
+        label = QLabel("Wyszukaj Projekt:")
+        label.setAlignment(Qt.AlignLeft)
         self.setCentralWidget(label)
 
         toolbar = QToolBar("Pasek Narzędzi")
         self.addToolBar(toolbar)
+
+        elemList = QListWidget()
+        #elemList.setAlignment(Qt.AlignTop)
+        self.setCentralWidget(elemList)
 
         button = QAction("Kliknij", self)
         button.setStatusTip("Kliknij ten przycisk")
@@ -26,7 +30,8 @@ class MainWindow(QMainWindow):
     def clickedButton(self, s):
         print("Klinknąłeś!", s)
 
-
+    def openFolder(self, o):
+        webbrowser.open(silnik.Engine.path_)
 
 
 app = QApplication(sys.argv)

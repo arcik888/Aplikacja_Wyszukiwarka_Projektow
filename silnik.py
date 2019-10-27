@@ -14,15 +14,15 @@ class Engine():
                     fil = os.listdir(self.top + i + '\\' + j)   #tworzenie nowej listy katalogów niżej
                     for k in fil:       #pęta przeszukująca listę katalogów niższego rzędu
                         if k[-4:] == '.txt':    #jeżeli jest plik tekstowy
-                            _path = self.top + i + '\\' + j + '\\'  #podana ścieżka do katalogu projektu
-                            f = open(_path + k, 'r')    #otwarcie pliku tekstowego
+                            path_ = self.top + i + '\\' + j + '\\'  #podana ścieżka do katalogu projektu
+                            f = open(path_ + k, 'r')    #otwarcie pliku tekstowego
                             read_file = f.read()        #przeczytanie pliku
                             f.close()                   #zamknięcie pliku
                             search = read_file.find(self.phrase)    #przeszukiwanie pliku żeby znaleźć szukaną frazę
                             if search > -1:             #jeżeli odczytana zawartość pliku zawiera szukaną frazę
-                                print(j + " -> " + os.path.abspath(_path))  #wyświetlany jest numer projektu wraz ze ścuieżką dostępu
+                                print(j + " -> " + os.path.abspath(path_))  #wyświetlany jest numer projektu wraz ze ścuieżką dostępu
                                 #webbrowser.open(_path) # otwiera okno folderu
-
+                                
                                 """Trzeba zrobic w GUI przycisk, który b ędzie otwierał folder
                                     -> numer wyszukanego projektu
                                     -> ścieżka w systemie
