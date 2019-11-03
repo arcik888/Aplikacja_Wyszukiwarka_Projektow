@@ -1,0 +1,1 @@
+{"Numer": "Numer projektu", "Nazwa": "Nazwa projektu", "Klient": "Nazwa Klienta", "Opis": "Opis projektu", "Klasa": "Klasyfikacja projektu", "Gabaryty": "krotka z wymiarami projektu", "Material": "U\u017cyty materia\u0142", "gatunek": "Gatunek materialu"}

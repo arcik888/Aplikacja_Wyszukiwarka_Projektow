@@ -25,6 +25,12 @@
     <Compile Include="gui.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="json_file.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="new_project.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="silnik.py">
       <SubType>Code</SubType>
     </Compile>
