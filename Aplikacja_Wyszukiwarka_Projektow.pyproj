@@ -28,6 +28,12 @@
     <Compile Include="json_file.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="connect.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="change_rev.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="new_project.py">
       <SubType>Code</SubType>
     </Compile>
