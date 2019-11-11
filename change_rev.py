@@ -1,16 +1,15 @@
 import os
-import new_project
+from project import Project
+import psycopg2 as pg
 
 top_path = 'C:\\Users\\arcik\\Desktop\\DESIGNS\\'
-new = input("Czy chcesz utworzyć nowy projekt? [T/N]: ")
-customer = input("Klient: ")
-name_project = input('Nazwa projektu: ')
 
-project = new_project.Project(top_path, customer, name_project)
+project = Project(top_path, 'Syncreon', 'KI32938')
 
-if new == 'T' or new == 't':
-    project.new_project()
-else:
-    pass
+print(project.last_project()[3])
 
-#os.mkdir(project.top_path + "new rev")v 
+f = project.top.find(project.name)
+print(f)
+
+#os.mkdir(project.last_project()[3][:7] + '\\' + project.last_project()[3][:7] + "new rev")
+

@@ -28,13 +28,13 @@
     <Compile Include="json_file.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="connect.py">
+    <Compile Include="new_project.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="change_rev.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="new_project.py">
+    <Compile Include="project.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="silnik.py">
