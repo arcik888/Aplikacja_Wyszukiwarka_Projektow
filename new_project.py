@@ -21,12 +21,10 @@ for record in cur:
 nr_ki = project.last_num[:7]
 path_ = project.last_path + '\\' + project.last_num
 
-id += 1
-
-#if id == None:
-#    id = 1
-#else:
-#    id = id + 1
+if id == None:
+    id = 1
+else:
+    id += 1
     
 cur.execute('INSERT INTO public.nr_ki (ki_id, ki_nr, ki_pathh) VALUES (%s, %s, %s)' , (id, nr_ki, path_))
 

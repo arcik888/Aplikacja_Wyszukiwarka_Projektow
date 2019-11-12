@@ -25,7 +25,7 @@
     <Compile Include="gui.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="json_file.py">
+    <Compile Include="update_approve.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="new_project.py">

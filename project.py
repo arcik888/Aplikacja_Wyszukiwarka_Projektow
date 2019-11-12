@@ -27,11 +27,9 @@ class Project():
                 try:
                     self.des2 = os.listdir(self.top + j + '\\' + k)
                     self.last_num = self.des2[-1]
-                    #self.last_path = self.top + j + '\\' + k + '\\' + self.last_num
                 except IndexError:
                     self.last_num = os.mkdir(self.top + j + '\\' + k + '\\' + k[0:7] + ' - ' + self.cust + ' - ' + self.name)
                     self.des2 = os.listdir(self.top + j + '\\' + k)
-                    #self.last_path = self.top + j + '\\' + k + '\\' + self.last_num
        
         return self.top_cat_KI, self.des, self.des2, self.last_num
 
@@ -78,7 +76,7 @@ class Project():
         print("Utworzono katalog nowego projektu: " + self.last_path + '\\' + self.last_num)
 
     def description(self):
-        desc_file = open(Opis + self.last_num, 'w')
+        desc_file = open('Opis' + self.last_num, 'w')
         desc_file.write()
 
     def find_project(self):
