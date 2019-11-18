@@ -1,30 +1,40 @@
-from project import Project
 import psycopg2 as pg
 from datetime import date
 
-conn = pg.connect("dbname = Projects_test user = postgres password = Pa$$w0rd")
+conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
 cur = conn.cursor()
 
-#Sprawdzenie ststusu projektu w BD
+#Pobranie z BD numerów projektów z statusem WIP
 
-cur.execute("SELECT * FROM public.ki_history WHERE status = 'WIP' ")
+cur.execute("SELECT * FROM all_ki")
 for record in cur:
-    print(record)
-    nr_ki = record[1]
-    rev = record[2]
+    wip = record
+    # WYŚWIETLA LISTĘ NUMERÓW, KTÓRE MAJĄ STATUS WIP
+    if wip[3] == 'WIP':
 
-cur.execute("SELECT * FROM public.ki_history ORDER BY id DESC LIMIT 1")
-for record in cur:
-    id_ = record[0] + 1
+        print(wip[1])
+    # ALE NIE MAJĄ STATUSU APPROVED
+    # JEŻELI TEN SAM NUMER MA STATUS WIP I APPROVED, NIE WYŚWIETLAJ
 
+
+nr_ki = input('Który numer KI akceptujesz?: ')
 accept = input('Czy projekt jest ok? [T/N]: ')
-date_ = date.today()
 
 if accept == 't' or accept == 'T':
-    cur.execute("INSERT INTO ki_history (id,nr_ki,rev,status,date) VALUES (%s, %s, %s, %s, %s)" , (id_, nr_ki, rev, 'APPROVED', date_))
-
-
-
-
+    nr_ki = ("'" + nr_ki + "'")
+    cur.execute("SELECT rev_ki FROM all_ki WHERE all_ki.nr_ki = %s ORDER BY id_ki DESC LIMIT 1" % (nr_ki))
+    for rev in cur: rev
+    cur.execute("SELECT status FROM status WHERE id_status = 2")
+    for stat in cur: stat
+    cur.execute("SELECT ki_path FROM all_ki WHERE nr_ki = %s" % (nr_ki))
+    for path_ in cur: path_
+    dat = date.today()
+    cur.execute("SELECT customer FROM all_ki WHERE nr_ki = %s" % (nr_ki))
+    for cust in cur: cust
+    cur.execute("SELECT project_name FROM all_ki WHERE nr_ki = %s" % (nr_ki))
+    for name in cur: name
+    tup = (nr_ki, rev, stat, path_, dat, cust, name)
+    #cur.execute("INSERT INTO all_ki (nr_ki, rev_ki, stat_rev_ki, ki_path, datetime, customer, project_name) VALUES (%s, %s, %s, %s, %s, %s, %s)", (nr_ki, rev, stat, path_, dat, cust, name))
+    
 conn.commit()
 conn.close()

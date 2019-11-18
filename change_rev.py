@@ -2,7 +2,7 @@ import os
 from project import Project
 import psycopg2 as pg
 
-conn = pg.connect("dbname = Projects_test user = postgres password = Pa$$w0rd")
+conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
 cur = conn.cursor()
 cur.execute("SELECT * FROM public.nr_ki")
 to_find = 'KI32966'

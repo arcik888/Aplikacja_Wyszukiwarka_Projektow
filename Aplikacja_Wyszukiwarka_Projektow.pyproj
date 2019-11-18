@@ -25,6 +25,9 @@
     <Compile Include="gui.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="module1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="update_approve.py">
       <SubType>Code</SubType>
     </Compile>
@@ -35,9 +38,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="project.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="silnik.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

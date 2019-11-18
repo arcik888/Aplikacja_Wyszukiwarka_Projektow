@@ -1,40 +1,20 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-import sys
-import silnik
+import psycopg2 as pg
+from datetime import date
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self.setWindowTitle("Wyszukiwarka Projektów")
-    
-        label = QLabel("Wyszukaj Projekt:")
-        label.setAlignment(Qt.AlignLeft)
-        self.setCentralWidget(label)
+conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
+cur = conn.cursor()
 
-        toolbar = QToolBar("Pasek Narzędzi")
-        self.addToolBar(toolbar)
+# Pobranie z BD numerów projektów z statusem APPROVED
 
-        elemList = QListWidget()
-        #elemList.setAlignment(Qt.AlignTop)
-        self.setCentralWidget(elemList)
+cur.execute("SELECT * FROM status")
+for record in cur:
+    print(record)
 
-        button = QAction("Kliknij", self)
-        button.setStatusTip("Kliknij ten przycisk")
-        button.triggered.connect(self.clickedButton)
-        toolbar.addAction(button)
+cur.execute("INSERT INTO all_ki (nr_ki, rev_ki, stat_rev_ki, ki_path, datetime, customer, project_name) VALUES (%s, %s, %s, %s, %s, %s, %s)", ('KI10293', 'A', 'WIP', 'C:\\', '2019-11-11', 'ABB', 'ABC'))
 
-        self.setStatusBar(QStatusBar(self))
+#SELECT id_ki, nr_ki, rev_ki, stat_rev_ki, ki_path, datetime, customer, project_name
+#	FROM public.all_ki;
 
-    def clickedButton(self, s):
-        print("Klinknąłeś!", s)
+conn.commit()
+#conn.close()
 
-    def openFolder(self, o):
-        webbrowser.open(silnik.Engine.path_)
-
-
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-app.exec_()
