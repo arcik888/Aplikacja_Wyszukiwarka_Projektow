@@ -9,12 +9,6 @@ cur = conn.cursor()
 # - PO NUMERZE
 # - PO SŁOWACH KLUCZOWYCH W PLIKU OPISU
 # - PO GABARYTACH
- 
-
-
-
-
-
 
 
 nr_ki = input("Który numer projektu ma mieć zmienioną rewizję?: ")
