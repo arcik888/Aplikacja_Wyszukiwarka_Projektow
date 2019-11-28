@@ -1,18 +1,6 @@
-Zrobiæ wyszukiwanie na podstawie plików stworzonych w okreœlonym formacie
-tak ¿eby mo¿na by³o wyszukiwaæ nie tylklo po szukanej frazie 
-ale te¿ po okreœlonych danych tj. rodzaj, materia³, wielkoœæ
+zrobiæ dodawanie pliku z opisem projektu ?kiedy?
 
-Baza Danych (PostgreSQL)
+zrobiæ wyszukiwanie projektów
 
-Zrobiæ modu³ do wstawiania danych do bazy w okreœlonym formacie, ¿eby mo¿na by³o te pliki odtwarzaæ w programie.
-Wyszukiwarka wyszukuje projekt na podstawie okreœlonych przez u¿ytkownika, nieokreœlone bêd¹ pomijane.
-
-- Nazwa projektu
-- Numer projektu
-- Klient
-- Opis s³owny projektu
-- Gabaryty projektu
-- Klasyfikacja materia³ów (karton, piana, mix)
-- rodzaj materia³u (gêstoœæ, gramatura)
-- inne
+dodaæ wyszukiwarkê do zmiany rewizji
 

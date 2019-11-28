@@ -1,6 +1,6 @@
 import psycopg2 as pg
 from project import Project 
-from datetime import date
+import datetime 
 
 conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
 cur = conn.cursor()
@@ -15,12 +15,19 @@ if new_project == 'T' or new_project == 't':
     project.new_project()
     nr_ki = project.last_num[:7]
     path_ = project.last_path + '\\' + project.last_num
-    dat = date.today()
-    cur.execute("SELECT status FROM status WHERE id_status = 1")
+    dat = datetime.datetime.now().date()
+    tim = datetime.datetime.now().time()
+    cur.execute("SELECT stat_name FROM status WHERE stat_id = 1")
     for record in cur:
         stat = record
-    #cur.execute('INSERT INTO nr_ki (nr_ki, rev_ki, stat_rev_ki, path_ki, customers, project_name) VALUES (%s, %s, %s, %s, %s, %s)' , (nr_ki, 'A', '', path_, customer, name_project))
-    cur.execute("INSERT INTO all_ki (nr_ki, rev_ki, stat_rev_ki, ki_path, datetime, customer, project_name) VALUES (%s, %s, %s, %s, %s, %s, %s)", (nr_ki, 'A', stat, path_, dat, customer, name_project))
+    
+    # WSTAWIA NOWY PROJEKT DO TABELI all_ki
+    cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, project_name) \
+        VALUES (%s, %s, %s, %s, %s, %s)", (nr_ki, 'A', stat, path_, customer, name_project))
+
+    # WSTAWIA DO TABELI hystory NOWY PROJEKT
+    cur.execute("INSERT INTO history (nr_ki, rev, stat, dat, tim) \
+        VALUES (%s, %s, %s, %s, %s)", (nr_ki, 'A', stat, dat, tim))
 
 else:
     pass
