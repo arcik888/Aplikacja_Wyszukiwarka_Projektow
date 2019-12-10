@@ -20,6 +20,12 @@ if new_project == 'T' or new_project == 't':
     cur.execute("SELECT stat_name FROM status WHERE stat_id = 1")
     for record in cur:
         stat = record
+
+    # OPIS PROJEKTU
+    desc_path = path_ + '\\' + 'Opis.txt'
+    desc_file = open(desc_path, 'w')
+    description = desc_file.write(input("Opis projektu: "))
+    desc_file.close()
     
     # WSTAWIA NOWY PROJEKT DO TABELI all_ki
     cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, project_name) \

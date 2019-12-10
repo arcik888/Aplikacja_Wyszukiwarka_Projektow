@@ -103,21 +103,3 @@ class Project():
                         #print(lower)
                         for self.found in lower:
                             self.found.find(self.name)
-
-top_path = 'C:\\Users\\arcik\\Desktop\\DESIGNS\\'
-
-project = Project(top_path, 'Syncreon', 'KI32938')
-
-
-
-
-#new_project = input("Czy chcesz utworzyć nowy projekt? [T/N]: ")
-#customer = input("Klient: ")
-#name_project = input('Nazwa projektu: ')
-#project = Project(top_path, customer, name_project)
-
-
-#if new_project == 'T' or new_project == 't':
-#    project.new_project()
-#else:
-#    pass

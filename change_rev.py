@@ -10,8 +10,8 @@ cur = conn.cursor()
 # - PO SŁOWACH KLUCZOWYCH W PLIKU OPISU
 # - PO GABARYTACH
 
-
 nr_ki = input("Który numer projektu ma mieć zmienioną rewizję?: ")
 
 cur.execute("SELECT * FROM all_ki WHERE nr_ki = %s" % ("'" + nr_ki + "'"))
 
+# PLIK ECO MÓWIĄCY DLACZEGO I KIEDY ZOSTAŁ ZMIENIONY PROJEKT
