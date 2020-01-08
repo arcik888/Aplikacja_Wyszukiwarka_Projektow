@@ -75,31 +75,3 @@ class Project():
 
         print("Utworzono katalog nowego projektu: " + self.last_path + '\\' + self.last_num)
 
-    def description(self):
-        desc_file = open('Opis' + self.last_num, 'w')
-        desc_file.write()
-
-    def find_project(self):
-        top = os.listdir(self.top)
-        self.top_KI = []
-        self.mid_KI = []
-        self.low_KI = []
-        self.lower = []
-
-        for i in top:
-            if i[:2] == 'KI':
-                self.top_KI.append(i)
-        for j in self.top_KI:
-            if j[:2] == 'KI':
-                self.mid_KI.append(j)
-                path_ = self.top + j + '\\'
-                a = os.listdir(path_)
-                for k in a:
-                    #print(k)
-                    if k[:2] == 'KI':
-                        self.low_KI.append(k)
-                        path_ = self.top + j + '\\' + k
-                        lower = os.listdir(path_)
-                        #print(lower)
-                        for self.found in lower:
-                            self.found.find(self.name)
