@@ -22,6 +22,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Aplikacja_Wyszukiwarka_Projektow.py" />
+    <Compile Include="check.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="names.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="searching.py">
       <SubType>Code</SubType>
     </Compile>

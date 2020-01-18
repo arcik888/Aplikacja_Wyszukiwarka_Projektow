@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import psycopg2 as pg
 import datetime
 import os
@@ -5,7 +7,6 @@ from searching import Search
 
 conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
 cur = conn.cursor()
-
 
 nr_ki = ''
 while nr_ki == '':
@@ -24,10 +25,6 @@ cur.execute("SELECT * FROM status WHERE stat_id = 1")
 for wip in cur:
     wip = wip[1]
 
-# wybrać z bazy aktualną rewizję dla projektu
-#cur.execute("SELECT rev FROM all_ki WHERE nr_ki = %s" % ("'" + nr + "'"))
-#for rev in cur: rev
-#rev = rev[2] # dalej podnieść literę rewizji
 rev = ord(rev)
 
 if rev > 64 and rev < 91:
@@ -61,14 +58,6 @@ cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, proj
 conn.commit()
 conn.close()
 
-    # stworzyć nowy katalogn nowej rewizji
-
-
     # PLIK ECO MÓWIĄCY DLACZEGO I KIEDY ZOSTAŁ ZMIENIONY PROJEKT
     # PLIK MA ZAWIERAĆ: data, numer KI, opis dlaczego został zmieniony, numer zmiany, kto zmienił
     # zmiana BOMu do tego ECO
-
-
-    # przy zmianie rev odczytać z bazy ostatnią rewizję projektu
-    # wstawić wyższą rewizję o 1
-    # rewizja jest w statusie WIP

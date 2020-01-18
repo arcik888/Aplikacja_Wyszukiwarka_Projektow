@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import psycopg2 as pg
 import datetime 
 import os
@@ -52,8 +54,8 @@ if accept == 't' or accept == 'T' and nr_ki == 8:
     file = open(bom_file, 'w')
     files = os.listdir(rev_path)
     for f in files:
-        if f != 'BOM.txt' and f[0] != 'F':
-            file.write(f + '\n')
+        if f != 'BOM.txt' and f[0] != 'F' and f[-4:] == '.pdf':
+            file.write(f[:-4] + '\n')
     file.close()
     
     # OPIS GABARYTÓW PROJEKTU
@@ -79,3 +81,7 @@ conn.close()
 # uzupełnienie informacji do dokumentacji
 # wprowadzenie właściciela projekltu (logowanie)
 # zaczęcie wprowadzenia potrzebnych dokumentów
+
+# w bomie uzupełnienie paletyzacji
+# paletyzacja półproduktów i FG
+

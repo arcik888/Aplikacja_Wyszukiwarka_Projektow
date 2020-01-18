@@ -1,4 +1,6 @@
 # Moduł dodaje nowy projekt do głównego katalogu parojektów
+# -*- coding: utf-8 -*-
+
 import os
 
 class Project():
@@ -35,7 +37,7 @@ class Project():
 
     def new_project(self):
         """
-        Metoda tworzy nowy katalog dla projektu i pierwszą - zerową rewizję projektu.
+        Metoda tworzy nowy katalog dla projektu i pierwszą - rewizję projektu.
         Jeżeli ostatni numer projektu jest ostatnim z zakresu, 
         tworzony jest nowy folder z wyższym zakresem.
         """

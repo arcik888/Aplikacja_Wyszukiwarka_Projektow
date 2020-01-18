@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import psycopg2 as pg
 import os
 
@@ -39,7 +41,7 @@ class Search:
             cur.execute("SELECT nr_ki, rev, lenght FROM all_ki")
             for lenght in cur: 
                 lenght
-                if lenght[2] == int(to_find): print(lenght[0], lenght[1])
+                if lenght[2] == int(to_find): print(lenght[0] + lenght[1])
 
         def find_width():
             # ZNAJDOWANIE PO W
@@ -47,7 +49,7 @@ class Search:
             cur.execute("SELECT nr_ki, rev, width FROM all_ki")
             for width in cur: 
                 width
-                if width[2] == int(to_find): print(width[0], width[1])
+                if width[2] == int(to_find): print(width[0] + width[1])
 
         def find_height():
         # ZNAJDOWANIE PO H
@@ -55,7 +57,7 @@ class Search:
             cur.execute("SELECT nr_ki, rev, height FROM all_ki")
             for height in cur: 
                 height
-                if height[2] == int(to_find): print(height[0], height[1])
+                if height[2] == int(to_find): print(height[0] + height[1])
 
         def find_customer():
         # ZNAJDOWANIE PO KLIENCIE
@@ -63,7 +65,7 @@ class Search:
             cur.execute("SELECT nr_ki, rev, customer FROM all_ki")
             for customer in cur: 
                 customer
-                if customer[2].lower() == to_find.lower(): print(customer[0], customer[1])
+                if customer[2].lower() == to_find.lower(): print(customer[0] + customer[1])
 
         def find_projectname():
         # ZNAJDOWANIE PO NAZWIE PROJEKTU
@@ -73,7 +75,7 @@ class Search:
                 name
                 data = name[2].lower()
                 data = data.find(to_find.lower())
-                if data > -1: print(name[0], name[1])
+                if data > -1: print(name[0] + name[1])
 
         def find_rev():
             to_find = input("Podaj numer projektu:")
