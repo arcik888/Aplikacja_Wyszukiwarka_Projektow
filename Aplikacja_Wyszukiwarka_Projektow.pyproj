@@ -28,7 +28,7 @@
     <Compile Include="App.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="names.py">
+    <Compile Include="raw_material_names.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="searching.py">

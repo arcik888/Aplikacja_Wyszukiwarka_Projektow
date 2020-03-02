@@ -5,9 +5,9 @@ import os
 
 class Project():
     def __init__(self, top, cust, name):
-        self.top = top
-        self.cust = cust
-        self.name = name
+        self.top = top # główny katalog projektów
+        self.cust = cust # nazwa klienta
+        self.name = name # nazwa projektu
 
     def last_project(self):
         # Znajduje numer ostatniego projektu w katalogu

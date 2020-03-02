@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
-def check(nr_ki):
-    # sprawdzenie czy podany numer KI jest prawidłowy i czy występuje taki w bazie
+def check():
+# sprawdzenie czy podany numer KI jest prawidłowy i czy występuje taki w bazie
     if len(nr_ki) == 8:
         prefix = nr_ki[0:2]
         number = nr_ki[2:7]

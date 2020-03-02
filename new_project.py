@@ -13,7 +13,7 @@ if new_project == 'T' or new_project == 't':
     top_path = 'C:\\Users\\arcik\\Desktop\\DESIGNS\\'
     customer = input("Klient: ")
     name_project = input('Nazwa projektu: ')
-    project = Project(top_path, customer, name_project)
+    project = Project(top_path, customer.capitalize(), name_project.upper())
     project.new_project()
     nr_ki = project.last_num[:7]
     path_ = project.last_path + '\\' + project.last_num
