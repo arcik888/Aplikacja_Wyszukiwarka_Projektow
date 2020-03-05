@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import psycopg2 as pg
 import datetime 
 import os
-
-conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
-cur = conn.cursor()
+import db_connect as db
+cs = db.Conn().conn()
+cur = cs.cursor()
 
 #Pobranie z BD numerów projektów z statusem APPROVED
 cur.execute("SELECT * FROM all_ki WHERE rev_status = 'APPROVED'")
@@ -73,8 +72,8 @@ elif accept.lower() != 't':
 elif len(nr_ki) != 8:
     print("Nieprawidłowy numer KI")
 
-conn.commit()
-conn.close()
+cs.commit()
+cs.close()
 
 # automatyczne dodawanie wykrojników
 # przypisywanie pian do BOMów?

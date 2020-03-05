@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import psycopg2 as pg
+import db_connect as db
 from project import Project 
 import datetime 
 
-conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
-cur = conn.cursor()
+cs = db.Conn().conn()
+cur = cs.cursor()
 
 new_project = input("Czy chcesz utworzyć nowy projekt? [T/N]: ")
 
@@ -40,5 +40,5 @@ if new_project == 'T' or new_project == 't':
 else:
     pass
 
-conn.commit()
-conn.close()
+cs.commit()
+cs.close()

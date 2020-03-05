@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
+from login import Logging
+import getpass
+
+log = False
+while log != True:
+    login = input("Login: ")
+    passwd = getpass.getpass("Hasło: ")
+    loger = Logging(login, passwd)
+    log = loger.logging()
+    master = loger.master()
 
 choice = ""
 while choice.lower() != "exit":
 
-    choice = input("""
-        Wybierz co chcesz zrobić:
-        - Utwórz nowy projekt [N]: 
-        - Akceptuj projekt [A]:
-        - Uwolnij projekt do produkcji [R]: 
-        - Zmień rewizję [I]:
-        - Wyszukaj projekt [F]: 
-        lub 'exit' aby zakończyć.
-        """)
+    print("Wybierz co chcesz zrobić:")
+    print("- Utwórz nowy projekt [N]: ")
+    if master == True:
+        print("- Akceptuj projekt [A]:")
+    print("- Uwolnij projekt do produkcji [R]:")
+    print("- Zmień rewizję [I]:")
+    print("- Wyszukaj projekt [F]:")
+    print("lub 'exit' aby zakończyć.")
+    choice = input()
 
     if choice.lower() == "n":
         import new_project

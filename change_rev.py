@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import psycopg2 as pg
 import datetime
 import os
 from searching import Search 
-
-conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
-cur = conn.cursor()
+import db_connect as db
+cs = db.Conn().conn()
+cur = cs.cursor()
 
 nr_ki = ''
 while nr_ki == '':
@@ -55,9 +54,5 @@ os.mkdir(path + '\\' + nr + ' rev ' + new_rev)
 cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, project_name) \
     VALUES (%s, %s, %s, %s, %s, %s)", (nr, new_rev, wip, path, customer, name_project))
 
-conn.commit()
-conn.close()
-
-    # PLIK ECO MÓWIĄCY DLACZEGO I KIEDY ZOSTAŁ ZMIENIONY PROJEKT
-    # PLIK MA ZAWIERAĆ: data, numer KI, opis dlaczego został zmieniony, numer zmiany, kto zmienił
-    # zmiana BOMu do tego ECO
+cs.commit()
+cs.close()

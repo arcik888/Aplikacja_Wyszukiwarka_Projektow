@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import psycopg2 as pg
 import os
+import db_connect as db
 
-conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
-cur = conn.cursor()
+cs = db.Conn().conn()
+cur = cs.cursor()
+
 class Search:
     def __init__(self):
         def find_phrase():
