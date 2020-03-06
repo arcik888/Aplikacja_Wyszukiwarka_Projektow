@@ -19,7 +19,7 @@ while nr_ki == '':
     nr = nr_ki[:7]
     rev = nr_ki[7]
 
-    # podaje status z BD
+    # podaje status WIP z BD
 cur.execute("SELECT * FROM status WHERE stat_id = 1")
 for wip in cur:
     wip = wip[1]
@@ -30,7 +30,7 @@ if rev > 64 and rev < 91:
     rev += 1
     new_rev = chr(rev)
 else:
-    print('Błąd. Za wysoka rewizja!')
+    print('Błąd. Za wysoka rewizja! Utwórz nowy projekt.')
     conn.close()
     
 # aktualna data
@@ -42,17 +42,18 @@ cur.execute("INSERT INTO history (nr_ki, rev, stat, dat, tim) \
     VALUES (%s, %s, %s, %s, %s)", (nr, new_rev, wip, dat, tim))
 
 # pobiera dane z bazy - ścieżkę, klienta, nazwę
-cur.execute("SELECT ki_path, customer, project_name FROM all_ki WHERE nr_ki = %s" % ("'" + nr + "'"))
+cur.execute("SELECT ki_path, customer, project_name, project_owner FROM all_ki WHERE nr_ki = %s" % ("'" + nr + "'"))
 for kit in cur:
     path = kit[0]
     customer = kit[1]
     name_project = kit[2]
+    project_owner = kit[3]
 # tworzenie nowego katalogu ścieżka do katalogu
 os.mkdir(path + '\\' + nr + ' rev ' + new_rev)
 
 # WSTAWIA PROJEKT z nowa rewizja DO TABELI all_ki z statusem wip
-cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, project_name) \
-    VALUES (%s, %s, %s, %s, %s, %s)", (nr, new_rev, wip, path, customer, name_project))
+cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, project_name, project_owner) \
+    VALUES (%s, %s, %s, %s, %s, %s, %s)", (nr, new_rev, wip, path, customer, name_project, project_owner))
 
 cs.commit()
 cs.close()

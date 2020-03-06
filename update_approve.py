@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import psycopg2 as pg
+import db_connect as db
 import datetime 
+from fpdf import FPDF
 
-conn = pg.connect("dbname = projects user = postgres password = Pa$$w0rd")
-cur = conn.cursor()
+cs = db.Conn().conn()
+cur = cs.cursor()
 
 #Pobranie z BD numerów projektów z statusem WIP
 cur.execute("SELECT * FROM all_ki WHERE rev_status = 'WIP'")
@@ -21,47 +22,6 @@ for app in cur:
    
 nr_ki = input('Który numer KI akceptujesz?: ')
 
-"""
-def check():
-    # sprawdzenie czy podany numer KI jest prawidłowy i czy występuje taki w bazie
-    if len(nr_ki) == 8:
-        prefix = nr_ki[0:2]
-        number = nr_ki[2:7]
-        revision = nr_ki[7]
-
-        if prefix.upper() == 'KI':
-            pr = True
-        elif prefix.upper() != 'KI':
-            pr = False
-
-
-        nr_kit = prefix + number
-        cur.execute("SELECT nr_ki FROM all_ki WHERE nr_ki = %s" % ("'" + nr_kit + "'"))
-        for nr in cur: 
-            if nr in cur:
-                number = nr[2:7]
-            else: 
-                nr = False
-        try: 
-            int(number)
-            nr = True
-        except TypeError:
-            nr = False
-
-        cur.execute("SELECT rev FROM all_ki WHERE nr_ki = %s" % ("'" + nr_kit + "'"))
-        for rev in cur: rev
-        if revision in rev: 
-            rv = True
-        else: 
-            rv = False
-
-        if pr == True and nr == True and rv == True:
-            return True
-        else:
-            return False
-    else:
-        return False"""
-
 if len(nr_ki) == 8:
     accept = input('Czy projekt jest ok? [T/N]: ')
     if accept.lower() == 't': #and check() == True:
@@ -76,6 +36,20 @@ if len(nr_ki) == 8:
         # wstawianie do bazy do tabeli historycznej
         cur.execute("INSERT INTO history (nr_ki, rev, stat, dat, tim) \
             VALUES (%s, %s, %s, %s, %s)", (nr, rev, approve, dat, tim))
+        #zebranie z bazy ścieżki projektu
+        cur.execute("SELECT * FROM all_ki WHERE nr_ki = %s" % ("'" + nr + "'"))
+        for path in cur: 
+            path = path[4]
+
+                # OPIS GABARYTÓW PROJEKTU
+        print('Podaj gabaryty zewnętrzne produktu:')
+        l = int(input('L: '))
+        w = int(input('W: '))
+        h = int(input('H: '))
+    
+        #wstawia do bazy gabaryty projektu
+        cur.execute("UPDATE all_ki SET lenght = %s, width = %s, height = %s WHERE nr_ki = %s AND rev = %s" , (l, w, h, nr, rev))
+
 
     elif accept.lower() != 't':
         print("Brak akceptacji")
@@ -84,5 +58,13 @@ if len(nr_ki) == 8:
         print("Nieprawidłowy numer KI")
 else: print("Nieprawidłowy numer KI")
 
-conn.commit()
-conn.close()
+# def document():
+# Tworzy nowy dokument PDF
+doc = FPDF()
+doc.add_page()
+doc.set_font('Arial', '', 12)
+doc.cell(25, 10, nr_ki)
+doc.output(path+"\\"+nr+" rev "+rev+"\\"+nr_ki+"_doc.pdf", "F")
+
+cs.commit()
+cs.close()
