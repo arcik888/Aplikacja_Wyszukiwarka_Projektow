@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-from login import Logging
+from login import Logging, cs, cur
 import getpass
 import os
 import json
-import db_connect as db
-cs = db.Conn().conn()
-cur = cs.cursor()
 
 log = False
 while log != True:
@@ -14,7 +11,7 @@ while log != True:
     loger = Logging(login, passwd)
     log = loger.logging()
 
-    cur.execute("SELECT * FROM designers WHERE login = %s" % ("'"+login+"'"))
+    cur.execute("SELECT * FROM users WHERE login = %s" % ("'"+login+"'"))
     for info in cur: info
     info = {'f_name': info[1], 'l_name':info[2], 'master': info[3]}
     with open('C:\\Users\\Public\\Temp.json', 'w') as js:
@@ -28,9 +25,10 @@ while choice.lower() != "exit":
     if info['master'] == True:
         print("- Akceptuj projekt [A]:")
     print("- Uwolnij projekt do produkcji [R]:")
-    print("- Zmień rewizję [I]:")
+    print("- Podnieś rewizję [I]:")
     print("- Wycofaj z produkcji [W]:")
     print("- Wyszukaj projekt [F]:")
+    print("- Sprawdź historię projektu [H]: ")
     print("lub 'exit' aby zakończyć.")
     choice = input()
 
@@ -46,6 +44,8 @@ while choice.lower() != "exit":
         import searching
         search = searching.Search()
         search
+    elif choice.lower() == 'h':
+        import history
     elif choice.lower() == "w":
         import archive
     elif choice.lower() == "exit":

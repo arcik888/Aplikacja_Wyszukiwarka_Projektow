@@ -9,11 +9,11 @@ cur = cs.cursor()
 
 nr_ki = ''
 while nr_ki == '':
-    nr_ki = input("Który numer projektu ma mieć zmienioną rewizję? [Podaj numer lub Wyszukaj [F]: ")
+    nr_ki = input("Który numer projektu ma mieć podniesioną rewizję? [Podaj numer lub Wyszukaj [F]: ")
     # Wstawić wyszukiwanie
     if nr_ki.lower() == 'f':
         search = Search()
-        nr_ki = input("Który numer projektu ma mieć zmienioną rewizję? ")
+        nr_ki = input("Który numer projektu ma mieć podniesioną rewizję? ")
         # Podany numer dostaje folder z nową rewizją
         # z bay wyciągnąć ścieżkę do folderu i dodać katalog z nową rev
     nr = nr_ki[:7]

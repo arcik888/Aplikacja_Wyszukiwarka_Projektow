@@ -9,7 +9,7 @@ class Logging:
         self.passwd = passwd
 
     def logging(self):
-        cur.execute("SELECT * FROM designers WHERE login = %s" % ("'" + self.login + "'"))
+        cur.execute("SELECT * FROM users WHERE login = %s" % ("'" + self.login + "'"))
         for designer in cur: designer
         if self.login == designer[4] and self.passwd == designer[5]:
             return True

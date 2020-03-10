@@ -15,7 +15,7 @@ for app in cur:
 nr_ki = input('Który numer KI jest zwolniony do produkcji?: ')
 accept = input('Czy projekt jest ok? [T/N]: ')
 
-if accept == 't' or accept == 'T' and nr_ki == 8:
+if accept == 't' or accept == 'T':
     dat = datetime.datetime.now().date()
     tim = datetime.datetime.now().time()
     nr = nr_ki[:7]
@@ -30,31 +30,31 @@ if accept == 't' or accept == 'T' and nr_ki == 8:
         for arch in cur:
             arch = arch[0]
         # update numeru projektu do ARCHIVEED
-        cur.execute("UPDATE all_ki SET rev_status = %s WHERE nr_ki = %s AND rev = %s" , (arch, nr, prev_rev))
+        cur.execute("UPDATE all_ki SET rev_status = %s WHERE nr_ki = %s AND rev = %s",\
+           (arch, nr, prev_rev))
         cs.commit()
-        # lepiej rewizję numeru usunąć i niech zostanie tylko obecna
-        cur.execute("DELETE FROM all_ki WHERE nr_ki = %s AND rev = %s AND  rev_status = %s", (nr, prev_rev, arch))
         cur.execute("INSERT INTO history (nr_ki, rev, stat, dat, tim) \
-        VALUES (%s, %s, %s, %s, %s)", (nr, prev_rev, arch, dat, tim))
+            VALUES (%s, %s, %s, %s, %s)", (nr, prev_rev, arch, dat, tim))
+        cur.execute("DELETE FROM all_ki WHERE nr_ki = %s AND rev = %s AND rev_status = %s",\
+           (nr, prev_rev, arch))
 
     cur.execute("SELECT stat_name FROM status WHERE stat_id = 3")
     for rel in cur:
         rel = rel[0]
-    cur.execute("UPDATE all_ki SET rev_status = %s WHERE nr_ki = %s AND rev = %s" , (rel, nr, rev))
-
+    cur.execute("UPDATE all_ki SET rev_status = %s WHERE nr_ki = %s AND rev = %s",\
+       (rel, nr, rev))
     cur.execute("INSERT INTO history (nr_ki, rev, stat, dat, tim) \
         VALUES (%s, %s, %s, %s, %s)", (nr, rev, rel, dat, tim))
 
     # wybiera ścieżke katalogu projektu
-    cur.execute("SELECT ki_path FROM all_ki WHERE nr_ki = %s and rev = %s" % ("'" + nr + "'", "'" + rev + "'"))
+    cur.execute("SELECT ki_path FROM all_ki WHERE nr_ki = %s and rev = %s"\
+       % ("'" + nr + "'", "'" + rev + "'"))
     for path in cur: path
-
     #podaje ścieżkę ostatniej rewizji produktu
     all_rev = os.listdir(path[0])
     for i in all_rev:
         if i[-1] == rev:
             rev_path = path[0] + '\\' + i
-
     # tworzenie nowego pliku BOM dla reewizji
     bom_file = rev_path + '\\' + 'BOM.txt'
     file = open(bom_file, 'w')
@@ -64,13 +64,8 @@ if accept == 't' or accept == 'T' and nr_ki == 8:
             file.write(f[:-4] + '\n')
     file.close()
     
-
 elif accept.lower() != 't':
     print("Brak akceptacji")
-
-elif len(nr_ki) != 8:
-    print("Nieprawidłowy numer KI")
-    
-
+   
 cs.commit()
 cs.close()
