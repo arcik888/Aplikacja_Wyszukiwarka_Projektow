@@ -20,9 +20,9 @@ while nr_ki == '':
     rev = nr_ki[7]
 
     # podaje status WIP z BD
-cur.execute("SELECT * FROM status WHERE stat_id = 1")
+cur.execute("SELECT stat_name FROM status WHERE stat_id = 1")
 for wip in cur:
-    wip = wip[1]
+    wip = wip[0]
 
 rev = ord(rev)
 

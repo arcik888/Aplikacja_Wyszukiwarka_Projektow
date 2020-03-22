@@ -81,6 +81,3 @@ class Project():
         else:
             create_low_cat(self)
             create_rev_cat(self)
-
-        print("Utworzono katalog nowego projektu: " + self.last_path + '\\' + self.last_num)
-

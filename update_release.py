@@ -7,10 +7,10 @@ cs = db.Conn().conn()
 cur = cs.cursor()
 
 #Pobranie z BD numerów projektów z statusem APPROVED
-cur.execute("SELECT * FROM all_ki WHERE rev_status = 'APPROVED'")
+cur.execute("SELECT nr_ki, rev FROM all_ki WHERE rev_status = 'APPROVED'")
 print("Projekty oczekujące na uwolnienie do produkcji: ")
 for app in cur:
-    print(app[1]+app[2])
+    print(app[0]+app[1])
    
 nr_ki = input('Który numer KI jest zwolniony do produkcji?: ')
 accept = input('Czy projekt jest ok? [T/N]: ')

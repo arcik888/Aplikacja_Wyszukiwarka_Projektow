@@ -2,18 +2,18 @@
 
 import db_connect as db
 import datetime 
-from fpdf import FPDF
+import fpdf
 
 cs = db.Conn().conn()
 cur = cs.cursor()
 
 #Pobranie z BD numerów projektów z statusem WIP
-cur.execute("SELECT * FROM all_ki WHERE rev_status = 'WIP'")
+cur.execute("SELECT nr_ki, rev FROM all_ki WHERE rev_status = 'WIP'")
 print("Projekty oczekujące na akceptację: ")
 
 proj = []
 for wip in cur:
-    project = wip[1] + wip[2]
+    project = wip[0] + wip[1]
     proj.append(project)
 for p in proj:
     print(p)
@@ -25,9 +25,9 @@ if nr_ki in proj:
         nr = nr_ki[:7]
         rev = nr_ki[-1]
         # podaje status z BD
-        cur.execute("SELECT * FROM status WHERE stat_id = 2")
+        cur.execute("SELECT stat_name FROM status WHERE stat_id = 2")
         for app in cur:
-            approve = app[1]
+            approve = app[0]
         # aktualna data
         dat = datetime.datetime.now().date()
         # aktualny czas
@@ -37,24 +37,26 @@ if nr_ki in proj:
         l = int(input('L: '))
         w = int(input('W: '))
         h = int(input('H: '))
-        #wstawia do bazy gabaryty projektu
-        cur.execute("UPDATE all_ki SET rev_status = %s lenght = %s, width = %s, height = %s \
-                     WHERE nr_ki = %s AND rev = %s" , (approve, l, w, h, nr, rev))
         # wstawianie do bazy do tabeli historycznej
         cur.execute("INSERT INTO history (nr_ki, rev, stat, dat, tim) \
-            VALUES (%s, %s, %s, %s, %s)", (nr, rev, approve, dat, tim))
+            VALUES (%s, %s, %s, %s, %s)", (nr, rev, approve, dat, tim))        
+        #wstawia do bazy gabaryty projektu
+        cur.execute("UPDATE all_ki SET rev_status = %s, lenght = %s, width = %s, height = %s \
+            WHERE nr_ki = %s AND rev = %s" , (approve, l, w, h, nr, rev))
+
     elif accept.lower() != 't':
         print("Brak akceptacji")
 else: print("Nieprawidłowy numer KI")
 
+
 # Tworzy nowy dokument PDF
 # zebranie z bazy ścieżki projektu
 
-cur.execute("SELECT * FROM all_ki WHERE nr_ki = %s" % ("'" + nr + "'"))
+cur.execute("SELECT ki_path FROM all_ki WHERE nr_ki = %s" % ("'" + nr + "'"))
 for path in cur: 
-    path = path[4]
+    path = path[0]
 
-doc = FPDF()
+doc = fpdf.FPDF()
 doc.add_page()
 doc.set_font('Arial', '', 12)
 doc.cell(25, 10, nr_ki)
@@ -62,4 +64,3 @@ doc.output(path+"\\"+nr+" rev "+rev+"\\"+nr_ki+"_doc.pdf", "F")
 
 cs.commit()
 cs.close()
-
