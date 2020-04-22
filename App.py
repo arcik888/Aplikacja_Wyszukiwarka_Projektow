@@ -7,20 +7,18 @@ import socket
 import pickle
 import datetime 
 import fpdf
-from threading import Thread
 
 def new_project():
     from project import Project
-    #import webbrowser
-    clientsocket.send(bytes("Czy chcesz utworzyć nowy projekt? [T/N]:", "UTF-8"))
-    new_project = clientsocket.recv(1)
+    serversocket.send(bytes("Czy chcesz utworzyć nowy projekt? [T/N]:", "UTF-8"))
+    new_project = serversocket.recv(1)
     if new_project.decode("utf-8") == 'T' or new_project.decode("utf-8") == 't':
         top_path = 'C:\\Firma\\DESIGNS\\'
-        clientsocket.send(bytes("Klient:", "UTF-8"))
-        customer = clientsocket.recv(64)
+        serversocket.send(bytes("Klient:", "UTF-8"))
+        customer = serversocket.recv(64)
         customer = customer.decode("UTF-8")
-        clientsocket.send(bytes("Nazwa projektu:", "UTF-8"))
-        name_project = clientsocket.recv(128)
+        serversocket.send(bytes("Nazwa projektu:", "UTF-8"))
+        name_project = serversocket.recv(128)
         name_project = name_project.decode("UTF-8")
         project = Project(top_path, customer.capitalize(), name_project.upper())
         project.new_project()
@@ -34,21 +32,14 @@ def new_project():
 
         # OPIS PROJEKTU
         with open(path_ + '\\' + 'Opis.txt', 'w') as desc:
-            clientsocket.send(bytes("Opis projektu:", "utf-8"))
-            description = clientsocket.recv(4096)
+            serversocket.send(bytes("Opis projektu:", "utf-8"))
+            description = serversocket.recv(4096)
             description = description.decode("utf-8")
             desc.write(description)
 
-        # POBIERANIE NAZWISKA PROJEKTANTA
-        """
-        with open('C:\\Users\\Public\\Temp.json', 'r') as js:
-            info = json.load(js)
-            designer_name = info['f_name'] + " " + info['l_name']
-            """
-
         # WSTAWIA NOWY PROJEKT DO TABELI all_ki
-        clientsocket.send(bytes("name", "utf-8"))
-        owner = clientsocket.recv(32)
+        serversocket.send(bytes("name", "utf-8"))
+        owner = serversocket.recv(32)
         owner = owner.decode("utf-8")
         cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, project_name, project_owner) \
             VALUES (%s, %s, %s, %s, %s, %s, %s)", (nr_ki, 'A', stat, path_, customer, name_project, owner))
@@ -58,7 +49,7 @@ def new_project():
             VALUES (%s, %s, %s, %s, %s)", (nr_ki, 'A', stat, dat, tim))
 
         # WYSŁANIE POTWIERDZENIA O UTWORZENIU PROJEKTU
-        clientsocket.send(bytes("Utworzono nowy projekt: "+nr_ki+"A", "utf-8"))
+        serversocket.send(bytes("Utworzono nowy projekt: "+nr_ki+"A", "utf-8"))
 
 
     else:
@@ -79,17 +70,17 @@ def update_approve():
         project = wip[0] + wip[1]
         proj.append(project)
 
-    clientsocket.send(bytes("Projekty oczekujące na akceptację:", "UTF-8"))
+    serversocket.send(bytes("Projekty oczekujące na akceptację:", "UTF-8"))
 
     for p in proj: 
-        clientsocket.send(bytes(p+"\n", "UTF-8"))
+        serversocket.send(bytes(p+"\n", "UTF-8"))
 
-    nr_ki = clientsocket.send(bytes('Który numer KI akceptujesz?:', "utf-8"))
-    nr_ki = clientsocket.recv(8)
+    serversocket.send(bytes('Który numer KI akceptujesz?:', "utf-8"))
+    nr_ki = serversocket.recv(8)
     nr_ki = nr_ki.decode("utf-8")
     if nr_ki in proj:
-        accept = clientsocket.send(bytes('Czy projekt jest ok? [T/N]:',"utf-8"))
-        accept = clientsocket.recv(1)
+        serversocket.send(bytes('Czy projekt jest ok? [T/N]:',"utf-8"))
+        accept = serversocket.recv(1)
         accept = accept.decode("utf-8")
         if accept.lower() == 't':
             nr = nr_ki[:7]
@@ -103,15 +94,15 @@ def update_approve():
             # aktualny czas
             tim = datetime.datetime.now().time()
             # OPIS GABARYTÓW PROJEKTU
-            clientsocket.send(bytes('Podaj gabaryty zewnętrzne produktu:', "utf-8"))
-            l = clientsocket.send(bytes('L: ', "utf-8"))
-            l = clientsocket.recv(16)
+            serversocket.send(bytes('Podaj gabaryty zewnętrzne produktu:', "utf-8"))
+            serversocket.send(bytes('L: ', "utf-8"))
+            l = serversocket.recv(16)
             l = l.decode("utf-8")
-            w = clientsocket.send(bytes('W: ', "utf-8"))
-            w = clientsocket.recv(16)
+            serversocket.send(bytes('W: ', "utf-8"))
+            w = serversocket.recv(16)
             w = w.decode("utf-8")
-            h = clientsocket.send(bytes('H: ', "utf-8"))
-            h = clientsocket.recv(16)
+            serversocket.send(bytes('H: ', "utf-8"))
+            h = serversocket.recv(16)
             h = h.decode("utf-8")
             # wstawianie do bazy do tabeli historycznej
             cur.execute("INSERT INTO history (nr_ki, rev, stat, dat, tim) \
@@ -128,15 +119,15 @@ def update_approve():
             doc.add_page()
             doc.set_font('Arial', '', 12)
             doc.cell(25, 10, nr_ki)
-            doc.output(path+"\\"+nr+" rev "+rev+"\\"+nr_ki+"_doc.pdf", "F")
+            doc.    (path+"\\"+nr+" rev "+rev+"\\"+nr_ki+"_doc.pdf", "F")
 
                     # WYSŁANIE POTWIERDZENIA O AKCEPTAACJI
-            clientsocket.send(bytes("Projekt "+nr+rev+" został zaakceptowany.", "utf-8"))
+            serversocket.send(bytes("Projekt "+nr+rev+" został zaakceptowany.", "utf-8"))
 
 
         elif accept.lower() != 't':
-            clientsocket.send(bytes("Brak akceptacji", "utf-8"))
-    else: clientsocket.send(bytes("Nieprawidłowy numer KI", "utf-8"))
+            serversocket.send(bytes("Brak akceptacji", "utf-8"))
+    else: serversocket.send(bytes("Nieprawidłowy numer KI", "utf-8"))
     cs.commit()
     cs.close()
 
@@ -145,22 +136,22 @@ def update_release():
     cur = cs.cursor()
 
     #Pobranie z BD numerów projektów z statusem APPROVED    
-    clientsocket.send(bytes("Projekty oczekujące na uwolnienie do produkcji:"+"\n", "UTF-8"))
+    serversocket.send(bytes("Projekty oczekujące na uwolnienie do produkcji:"+"\n", "UTF-8"))
 
     cur.execute("SELECT nr_ki, rev FROM all_ki WHERE rev_status = 'APPROVED'")
     proj = []
     for app in cur:
         approved = app[0]+app[1]
         proj.append(approved)
-        clientsocket.send(bytes(approved+'\n', "utf-8"))
+        serversocket.send(bytes(approved+'\n', "utf-8"))
         
-    nr_ki = clientsocket.send(bytes('Który numer KI jest zwolniony do produkcji?:', "UTF-8"))
-    nr_ki = clientsocket.recv(8)
+    serversocket.send(bytes('Który numer KI jest zwolniony do produkcji?:', "UTF-8"))
+    nr_ki = serversocket.recv(8)
     nr_ki = nr_ki.decode("utf-8")
 
     if nr_ki in proj:
-        accept = clientsocket.send(bytes('Czy projekt jest ok? [T/N]:', "utf-8"))
-        accept = clientsocket.recv(1)
+        serversocket.send(bytes('Czy projekt jest ok? [T/N]:', "utf-8"))
+        accept = serversocket.recv(1)
         accept = accept.decode("utf-8")
         if accept == 't' or accept == 'T':
             dat = datetime.datetime.now().date()
@@ -211,22 +202,22 @@ def update_release():
                     file.write(f[:-4] + '\n')
             file.close()
 
-            clientsocket.send(bytes("""
+            serversocket.send(bytes("""
             Dokument PDF utworzony.
             Projekt zwolniony do produkcji.
             ""","utf-8"))
 
         elif accept.lower() != 't':
-            clientsocket.send(bytes("Brak akceptacji", "utf-8"))
-    else: clientsocket.send(bytes("Nieprawidłowy numer KI", "utf-8"))
+            serversocket.send(bytes("Brak akceptacji", "utf-8"))
+    else: serversocket.send(bytes("Nieprawidłowy numer KI", "utf-8"))
     cs.commit()
     cs.close()
 
 def change_rev():
     cs = db.Conn().conn()
     cur = cs.cursor()
-    nr_ki = clientsocket.send(bytes("Który numer projektu ma mieć podniesioną rewizję?", "utf-8"))
-    nr_ki = clientsocket.recv(8)
+    serversocket.send(bytes("Który numer projektu ma mieć podniesioną rewizję?", "utf-8"))
+    nr_ki = serversocket.recv(8)
     nr_ki = nr_ki.decode("utf-8")
     nr = nr_ki[:7]
     rev = nr_ki[-1]
@@ -269,16 +260,16 @@ def change_rev():
         # WSTAWIA PROJEKT z nowa rewizja DO TABELI all_ki z statusem wip
         cur.execute("INSERT INTO all_ki (nr_ki, rev, rev_status, ki_path, customer, project_name, project_owner) \
             VALUES (%s, %s, %s, %s, %s, %s, %s)", (nr, new_rev, wip, path, customer, name_project, project_owner))
-        clientsocket.send(bytes("Utworzono nową rewizję ("+new_rev+") dla projektu "+nr,"utf-8"))
-    else: clientsocket.send(bytes("Nieorawidłowy numer KI", "utf-8"))
+        serversocket.send(bytes("Utworzono nową rewizję ("+new_rev+") dla projektu "+nr,"utf-8"))
+    else: serversocket.send(bytes("Nieorawidłowy numer KI", "utf-8"))
     cs.commit()
     cs.close()
 
 def archive():
     cs = db.Conn().conn()
     cur = cs.cursor()
-    nr_ki = clientsocket.send(bytes("Który numer projektu wychodzi z produkcji?:", "utf-8"))
-    nr_ki = clientsocket.recv(8)
+    serversocket.send(bytes("Który numer projektu wychodzi z produkcji?:", "utf-8"))
+    nr_ki = serversocket.recv(8)
     nr_ki = nr_ki.decode("utf-8")
     nr = nr_ki[:7]
     rev = nr_ki[-1]
@@ -308,9 +299,9 @@ def archive():
         # aktualizuje status do ARCHIVED w podanym numerze KI
         cur.execute("UPDATE all_ki SET rev_status = %s WHERE nr_ki = %s AND rev = %s" , (arch, nr, rev))
 
-        clientsocket.send(bytes("Projekt zarchiwizowany", "utf-8"))
+        serversocket.send(bytes("Projekt zarchiwizowany", "utf-8"))
 
-    else: clientsocket.send(bytes("Nieorawidłowy numer KI", "utf-8"))
+    else: serversocket.send(bytes("Nieorawidłowy numer KI", "utf-8"))
     cs.commit()
     cs.close()
 
@@ -318,12 +309,12 @@ def history():
     cs = db.Conn().conn()
     cur = cs.cursor()
 
-    nr_ki = clientsocket.send(bytes("Numer projektu: ", "utf-8"))
-    nr_ki = clientsocket.recv(8)
+    serversocket.send(bytes("Numer projektu: ", "utf-8"))
+    nr_ki = serversocket.recv(8)
     nr_ki = nr_ki.decode("utf-8")
 
     cur.execute("SELECT dat, tim, nr_ki, rev, stat FROM history WHERE nr_ki = %s" % ("'"+nr_ki+"'"))
-    clientsocket.send(bytes("Zmiany projektu "+nr_ki, "utf-8"))
+    serversocket.send(bytes("Zmiany projektu "+nr_ki, "utf-8"))
     for i in cur:
         day = str(i[0].day)
         mon = str(i[0].month)
@@ -335,12 +326,12 @@ def history():
         rev = i[3]
         stat = i[4]
         history = nr+' - '+rev+' - '+stat+' - '+day+'-'+mon+'-'+yr+', '+hr+':'+min+':'+sec +"\n"
-        clientsocket.send(bytes(history, "utf-8"))
+        serversocket.send(bytes(history, "utf-8"))
 
 def searching():
     search = ''
     while search.lower() != 'close':
-        clientsocket.send(bytes("""
+        serversocket.send(bytes("""
         Wyszukiwanie (Wpisz odpowiedni znak):
         - Opis ['O']: 
         - Długość ['L']: 
@@ -351,88 +342,102 @@ def searching():
         - Sprawdź aktualną rewizję ['R']:
         lub 'close' aby zamknąć wyszukiwarkę.
         """, "utf-8"))
-        search = clientsocket.recv(5)
+        search = serversocket.recv(5)
         search = search.decode("utf-8")
 
         if search.lower() == 'o':
-            clientsocket.send(bytes("Podaj szukaną frazę:","utf-8"))
-            condition = clientsocket.recv(32)
+            serversocket.send(bytes("Podaj szukaną frazę:","utf-8"))
+            condition = serversocket.recv(1024)
             condition = condition.decode("utf-8")
             finder = Search(condition)
-            print(finder.find_phrase())
+            found = finder.find_phrase()
+            for rec in found:
+                serversocket.send(bytes(rec+"\n", "utf-8"))
             search = ''
 
         elif search.lower() == 'l':
-            clientsocket.send(bytes("Podaj szukaną długość 'L'[mm]:","utf-8"))
-            condition = clientsocket.recv(32)
+            serversocket.send(bytes("Podaj szukaną długość 'L'[mm]:","utf-8"))
+            condition = serversocket.recv(32)
             condition = condition.decode("utf-8")
             finder = Search(condition)
-            clientsocket.send(bytes(finder.find_lenght(),"utf-8"))
+            found = finder.find_lenght()
+            for rec in found:
+                serversocket.send(bytes(rec+"\n", "utf-8"))
             search = ''
 
         elif search.lower() == 'w':
-            clientsocket.send(bytes("Podaj szukaną szerokość 'W'[mm]:","utf-8"))
-            condition = clientsocket.recv(32)
+            serversocket.send(bytes("Podaj szukaną szerokość 'W'[mm]:","utf-8"))
+            condition = serversocket.recv(32)
             condition = condition.decode("utf-8")
             finder = Search(condition)
-            finder.find_width()
+            found = finder.find_width()
+            for rec in found:
+                serversocket.send(bytes(rec+"\n", "utf-8"))
             search = ''
 
         elif search.lower() == 'h':
-            clientsocket.send(bytes("Podaj szukaną wyokość 'H'[mm]:","utf-8"))
-            condition = clientsocket.recv(32)
+            serversocket.send(bytes("Podaj szukaną wyokość 'H'[mm]:","utf-8"))
+            condition = serversocket.recv(32)
             condition = condition.decode("utf-8")
             finder = Search(condition)
-            finder.find_height()
+            found = finder.find_height()
+            for rec in found:
+                serversocket.send(bytes(rec+"\n", "utf-8"))
             search = ''
 
         elif search.lower() == 'c':
-            clientsocket.send(bytes("Podaj nazwę klienta:","utf-8"))
-            condition = clientsocket.recv(32)
+            serversocket.send(bytes("Podaj nazwę klienta:","utf-8"))
+            condition = serversocket.recv(32)
             condition = condition.decode("utf-8")
             finder = Search(condition)
-            finder.find_customer()
+            found = finder.find_customer()
+            for rec in found:
+                serversocket.send(bytes(rec+"\n", "utf-8"))
             search = ''
 
         elif search.lower() == 'n':
-            clientsocket.send(bytes("Podaj nazawę projektu:","utf-8"))
-            condition = clientsocket.recv(32)
+            serversocket.send(bytes("Podaj nazawę projektu:","utf-8"))
+            condition = serversocket.recv(32)
             condition = condition.decode("utf-8")
             finder = Search(condition)
-            finder.find_projectname()
+            found = finder.find_projectname()
+            for rec in found:
+                serversocket.send(bytes(rec+"\n", "utf-8"))
             search = ''
 
         elif search.lower() == 'r':
-            clientsocket.send(bytes("Podaj numer projektu:","utf-8"))
-            condition = clientsocket.recv(32)
+            serversocket.send(bytes("Podaj numer projektu:","utf-8"))
+            condition = serversocket.recv(32)
             condition = condition.decode("utf-8")
             finder = Search(condition)
-            finder.find_rev()
+            found = finder.find_rev()
+            for rec in found:
+                serversocket.send(bytes(rec+"\n", "utf-8"))
             search = ''
 
         else:
             "Wystąpił błąd!"
 
-host = '192.168.13.6'
+host = '192.168.13.7'
 port = 34543
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((host, port))
 while True:     # start serwera
     s.listen(5) # Kolejkowanie max 5 żądań
-    clientsocket , address = s.accept()
+    serversocket , address = s.accept()
     ip, port = str(address[0]), str(address[1])
     print("Połączenie przychodzące z %s:%s", (ip, port))
-    clientsocket.send(bytes("Witaj w Aplikacji.", "UTF-8"))
-    Thread(target=client_thread, args=(clientsocket, ip, port)).start()
+    serversocket.send(bytes("Witaj w Aplikacji.", "UTF-8"))
+    #Thread(target=client_thread, args=(serversocket, ip, port)).start()
     # Logowanie
     log = False
     while log != True:
-        login = clientsocket.send(bytes("Login: ", "UTF-8"))
-        login = clientsocket.recv(32)
+        login = serversocket.send(bytes("Login: ", "UTF-8"))
+        login = serversocket.recv(32)
         login = login.decode("utf-8")
-        passwd = clientsocket.send(bytes("Haslo: ", "UTF-8"))
-        passwd = clientsocket.recv(32)
+        passwd = serversocket.send(bytes("Haslo: ", "UTF-8"))
+        passwd = serversocket.recv(32)
         passwd = passwd.decode("utf-8")
         loger = Logging(login, passwd)
         log = loger.logging()
@@ -442,15 +447,15 @@ while True:     # start serwera
         full_name = info['f_name'] + ' ' + info['l_name']
         #wysłanie informacji o zalogowanym do aplikacji klienta
         send_info = pickle.dumps(info)
-        clientsocket.send(send_info)
+        serversocket.send(send_info)
     # Powitanie zalogowanego
     if log == True:
         welcome = "Witaj "+full_name
-        clientsocket.send(bytes(welcome, "UTF-8"))
+        serversocket.send(bytes(welcome, "UTF-8"))
     # Opcje programu
     choice = ""
     while choice.lower() != "exit":
-        clientsocket.send(bytes("""
+        serversocket.send(bytes("""
         Wybierz co chcesz zrobić:
         - Utwórz nowy projekt [N]
         - Akceptuj projekt [A]
@@ -462,19 +467,19 @@ while True:     # start serwera
         lub 'exit' aby zakończyć.
         """, "UTF-8"))
 
-        choice = clientsocket.recv(32)
+        choice = serversocket.recv(32)
         choice = choice.decode("UTF-8")
         
 
         if choice.lower() == "n":
             new_project()
         elif choice.lower() == "a":
-            clientsocket.send(bytes("master", "utf-8"))
-            master = clientsocket.recv(8)
+            serversocket.send(bytes("master", "utf-8"))
+            master = serversocket.recv(8)
             master = master.decode("UTF-8")
             if master == 'True':
                 update_approve()
-            else: clientsocket.send(bytes("Nie masz uprawnień do tej funkcji.", "utf-8"))
+            else: serversocket.send(bytes("Nie masz uprawnień do tej funkcji.", "utf-8"))
         elif choice.lower() == "r":
             update_release()
         elif choice.lower() == "i":
@@ -486,65 +491,6 @@ while True:     # start serwera
         elif choice.lower() == "w":
             archive()
         elif choice.lower() == "exit":
-            clientsocket.send(bytes("Zakończono", "utf-8"))
+            serversocket.send(bytes("Zakończono", "utf-8"))
             print(f"Zakończono połączenie z {address}")         # główna pętla programu
 
-
-"""
-def new():
-    import socket
-    import sys
-    import traceback
-    from threading import Thread
-    def main():
-       start_server()
-    def start_server():
-       host = "127.0.0.1"
-       port = 8000 # arbitrary non-privileged port
-       soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-       soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-       print("Socket created")
-       try:
-          soc.bind((host, port))
-       except:
-          print("Bind failed. Error : " + str(sys.exc_info()))
-          sys.exit()
-       soc.listen(6) # queue up to 6 requests
-       print("Socket now listening")
-       # infinite loop- do not reset for every requests
-       while True:
-          connection, address = soc.accept()
-          ip, port = str(address[0]), str(address[1])
-          print("Connected with " + ip + ":" + port)
-       try:
-          Thread(target=client_thread, args=(connection, ip, port)).start()
-       except:
-          print("Thread did not start.")
-          traceback.print_exc()
-       soc.close()
-    def clientThread(connection, ip, port, max_buffer_size = 5120):
-       is_active = True
-       while is_active:
-          client_input = receive_input(connection, max_buffer_size)
-          if "--QUIT--" in client_input:
-             print("Client is requesting to quit")
-             connection.close()
-             print("Connection " + ip + ":" + port + " closed")
-             is_active = False
-          else:
-             print("Processed result: {}".format(client_input))
-             connection.sendall("-".encode("utf8"))
-    def receive_input(connection, max_buffer_size):
-       client_input = connection.recv(max_buffer_size)
-       client_input_size = sys.getsizeof(client_input)
-       if client_input_size > max_buffer_size:
-          print("The input size is greater than expected {}".format(client_input_size))
-       decoded_input = client_input.decode("utf8").rstrip()
-       result = process_input(decoded_input)
-       return result
-    def process_input(input_str):
-       print("Processing the input received from client")
-       return "Hello " + str(input_str).upper()
-    if __name__ == "__main__":
-       main()
-"""
